@@ -1,4 +1,5 @@
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
+import { Person } from '../../models/person';
 
 @Component({
   selector: 'app-person-table',
@@ -6,5 +7,7 @@ import { Component } from '@angular/core';
   styleUrls: ['./person-table.component.scss']
 })
 export class PersonTableComponent {
+  @Input() people: Person[] = [];
 
+  constructor() {}
 }

@@ -1,1 +1,26 @@
-<p>person-table works!</p>
+<table>
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Nome</th>
+        <th>Endereço</th>
+        <th>CEP</th>
+        <th>UF</th>
+        <th>Ativo</th>
+        <th>Contatos</th>
+        <th>Ações</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let person of people">
+        <td>{{ person.id }}</td>
+        <td>{{ person.name }}</td>
+        <td>{{ person.address }}</td>
+        <td>{{ person.cep }}</td>
+        <td>{{ person.state }}</td>
+        <td>{{ person.active ? 'Sim' : 'Não' }}</td>
+        <td>{{ person.contacts.join(', ') }}</td>
+      </tr>
+    </tbody>
+  </table>
+  

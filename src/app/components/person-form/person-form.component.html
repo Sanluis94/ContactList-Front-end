@@ -1,1 +1,26 @@
-<p>person-form works!</p>
+<form [formGroup]="personForm" (ngSubmit)="onSubmit()">
+    <label for="name">Nome</label>
+    <input id="name" formControlName="name" type="text" required />
+  
+    <label for="cep">CEP</label>
+    <input id="cep" formControlName="cep" type="text" (blur)="fetchAddress()" required />
+  
+    <label for="address">Endereço</label>
+    <input id="address" formControlName="address" type="text" required />
+  
+    <label for="city">Cidade</label>
+    <input id="city" formControlName="city" type="text" required />
+  
+    <label for="state">Estado</label>
+    <select id="state" formControlName="state" required>
+      <option value="">Selecione um estado</option>
+      <option *ngFor="let uf of states" [value]="uf">{{ uf }}</option>
+    </select>
+  
+    <label>
+      <input type="checkbox" formControlName="active" /> Ativo
+    </label>
+  
+    <button type="submit">{{ isEditMode ? 'Atualizar' : 'Cadastrar' }}</button>
+  </form>
+  
