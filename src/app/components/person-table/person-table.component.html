@@ -1,4 +1,7 @@
-<table>
+<!-- person-table.component.html -->
+<div class="table-container">
+  <button class="add-btn" (click)="addPerson()">+ Adicionar Pessoa</button>
+  <table>
     <thead>
       <tr>
         <th>ID</th>
@@ -20,7 +23,11 @@
         <td>{{ person.state }}</td>
         <td>{{ person.active ? 'Sim' : 'Não' }}</td>
         <td>{{ person.contacts.join(', ') }}</td>
+        <td>
+          <button class="edit-btn" (click)="editPerson(person.id)">Editar</button>
+          <button class="delete-btn" (click)="deletePerson(person.id)">Excluir</button>
+        </td>
       </tr>
     </tbody>
   </table>
-  
+</div>

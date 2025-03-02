@@ -1,42 +1,105 @@
+/* person-table.component.scss */
+
+/* Paleta de Cores */
+$primary-color: #4CAF50;
+$secondary-color: #2E7D32;
+$background-color: #F4F7F6;
+$hover-color: #C8E6C9;
+$border-color: #E0E0E0;
+$danger-color: #D32F2F;
+$danger-hover: #B71C1C;
+
+/* Estilos gerais */
 table {
-    width: 100%;
-    border-collapse: collapse;
-    margin-top: 20px;
-  
-    th, td {
-      border: 1px solid #ddd;
-      padding: 10px;
-      text-align: left;
-    }
-  
-    th {
-      background-color: #007bff;
-      color: white;
-    }
-  
-    tr:nth-child(even) {
-      background-color: #f2f2f2;
-    }
-  
-    button {
-      padding: 5px 10px;
-      border: none;
-      border-radius: 4px;
-      cursor: pointer;
-  
-      &.edit {
-        background-color: #ffc107;
-        color: black;
-      }
-  
-      &.delete {
-        background-color: #dc3545;
-        color: white;
-      }
-  
-      &:hover {
-        opacity: 0.8;
-      }
-    }
+  width: 100%;
+  border-collapse: collapse;
+  background: white;
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+thead {
+  background: $primary-color;
+  color: white;
+  font-size: 16px;
+}
+
+th, td {
+  padding: 12px 15px;
+  text-align: left;
+  border-bottom: 1px solid $border-color;
+}
+
+tbody tr {
+  transition: background 0.3s ease;
+}
+
+tbody tr:hover {
+  background: $hover-color;
+}
+
+/* Botões de ação */
+button {
+  border: none;
+  padding: 8px 12px;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: bold;
+  border-radius: 5px;
+  transition: all 0.3s ease;
+}
+
+.edit-btn {
+  background: $secondary-color;
+  color: white;
+}
+
+.edit-btn:hover {
+  background: darken($secondary-color, 10%);
+}
+
+.delete-btn {
+  background: $danger-color;
+  color: white;
+}
+
+.delete-btn:hover {
+  background: $danger-hover;
+}
+.add-btn {
+  background: #2196F3;
+  color: white;
+  border: none;
+  padding: 10px 16px;
+  font-size: 16px;
+  font-weight: bold;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  margin-bottom: 10px;
+  display: inline-block;
+}
+
+.add-btn:hover {
+  background: #1565C0;
+}
+
+
+/* Responsividade */
+@media (max-width: 768px) {
+  table {
+    font-size: 14px;
   }
+
+  th, td {
+    padding: 10px;
+  }
+
+  button {
+    padding: 6px 10px;
+    font-size: 12px;
+  }
+
   
+}
