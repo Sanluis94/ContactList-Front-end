@@ -12,9 +12,8 @@ import { HttpClient } from '@angular/common/http';
 })
 export class PersonFormComponent implements OnInit {
   personForm: FormGroup;
-  isEditMode = false;
+  isEditing = false;
   personId?: number;
-  states: string[] = ['AC', 'AL', 'AP', 'AM', 'BA', 'CE', 'DF', 'ES', 'GO', 'MA', 'MT', 'MS', 'MG', 'PA', 'PB', 'PR', 'PE', 'PI', 'RJ', 'RN', 'RS', 'RO', 'RR', 'SC', 'SP', 'SE', 'TO']; // Adicione esta linha
 
   constructor(
     private fb: FormBuilder,
@@ -25,50 +24,65 @@ export class PersonFormComponent implements OnInit {
   ) {
     this.personForm = this.fb.group({
       name: ['', Validators.required],
-      cep: ['', [Validators.required, Validators.minLength(8)]],
+      email: ['', [Validators.required, Validators.email]],
+      phone: ['', [Validators.required, Validators.pattern('^[0-9]{10,11}$')]],
+      zipCode: ['', [Validators.required, Validators.minLength(8), Validators.maxLength(8)]],
       address: ['', Validators.required],
       city: ['', Validators.required],
       state: ['', Validators.required],
-      active: [true]
+      active: [true],
+      contactType: ['', Validators.required], 
     });
   }
 
   ngOnInit(): void {
     this.personId = Number(this.route.snapshot.paramMap.get('id'));
     if (this.personId) {
-      this.isEditMode = true;
+      this.isEditing = true;
       this.personService.getPersonById(this.personId).subscribe(person => {
-        this.personForm.patchValue(person);
+        this.personForm.reset(person); // Usa reset para garantir atualização correta
       });
     }
   }
 
   onSubmit(): void {
-    if (this.personForm.valid) {
-      const person: Person = this.personForm.value;
-
-      if (this.isEditMode) {
-        this.personService.updatePerson(this.personId!, person).subscribe(() => {
-          this.router.navigate(['/people']);
-        });
-      } else {
-        this.personService.createPerson(person).subscribe(() => {
-          this.router.navigate(['/people']);
-        });
-      }
+    if (this.personForm.invalid) {
+      this.personForm.markAllAsTouched();
+      return;
     }
+  
+    const person: Person = this.personForm.value;
+    console.log('Enviando para a API:', JSON.stringify(person, null, 2));
+  
+    this.personService.createPerson(person).subscribe({
+      next: () => {
+        console.log('Pessoa criada com sucesso:', person);
+        this.router.navigate(['/people']);
+      },
+      error: (err) => {
+        console.error('Erro ao criar pessoa:', err);
+        console.log('Detalhes do erro:', err.message);
+        console.log('Erro completo:', err);
+      }
+    });
   }
 
   fetchAddress(): void {
-    const cep = this.personForm.get('cep')?.value;
-    if (cep.length === 8) {
-      this.http.get<any>(`https://viacep.com.br/ws/${cep}/json/`).subscribe(data => {
-        this.personForm.patchValue({
-          address: `${data.logradouro}, ${data.bairro}`,
-          city: data.localidade,
-          state: data.uf
-        });
+    const zipCode = this.personForm.get('zipCode')?.value;
+    if (zipCode.length === 8) {
+      this.http.get<any>(`https://viacep.com.br/ws/${zipCode}/json/`).subscribe(data => {
+        if (!data.erro) {
+          this.personForm.patchValue({
+            address: `${data.logradouro}, ${data.bairro}`,
+            city: data.localidade,
+            state: data.uf
+          });
+        }
       });
     }
+  }
+
+  onCancel(): void {
+    this.router.navigate(['/people']);
   }
 }

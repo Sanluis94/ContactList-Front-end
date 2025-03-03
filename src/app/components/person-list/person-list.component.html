@@ -6,10 +6,11 @@
       <th>ID</th>
       <th>Nome</th>
       <th>Endereço</th>
-      <th>CEP</th>
+      <th>zipCode</th>
       <th>UF</th>
       <th>Ativo</th>
       <th>Contatos</th>
+      <th>Tipo de Contato</th> 
       <th>Ações</th>
     </tr>
   </thead>
@@ -18,12 +19,12 @@
       <td>{{ person.id }}</td>
       <td>{{ person.name }}</td>
       <td>{{ person.address }}</td>
-      <td>{{ person.cep }}</td>
+      <td>{{ person.zipCode }}</td>
       <td>{{ person.state }}</td>
       <td>{{ person.active ? 'Sim' : 'Não' }}</td>
       <td>{{ person.contacts.join(', ') }}</td>
+      <td>{{ getContactType(person.contactType) }}</td> 
       <td>
-        <button (click)="loadPeople()">Carregar</button>
         <button (click)="deletePerson(person.id)">Excluir</button>
       </td>
     </tr>

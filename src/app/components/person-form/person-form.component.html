@@ -1,26 +1,66 @@
-<form [formGroup]="personForm" (ngSubmit)="onSubmit()">
-    <label for="name">Nome</label>
-    <input id="name" formControlName="name" type="text" required />
+<div class="container">
+  <h2>{{ isEditing ? 'Edit Person' : 'Add Person' }}</h2>
   
-    <label for="cep">CEP</label>
-    <input id="cep" formControlName="cep" type="text" (blur)="fetchAddress()" required />
-  
-    <label for="address">Endereço</label>
-    <input id="address" formControlName="address" type="text" required />
-  
-    <label for="city">Cidade</label>
-    <input id="city" formControlName="city" type="text" required />
-  
-    <label for="state">Estado</label>
-    <select id="state" formControlName="state" required>
-      <option value="">Selecione um estado</option>
-      <option *ngFor="let uf of states" [value]="uf">{{ uf }}</option>
-    </select>
-  
-    <label>
-      <input type="checkbox" formControlName="active" /> Ativo
-    </label>
-  
-    <button type="submit">{{ isEditMode ? 'Atualizar' : 'Cadastrar' }}</button>
+  <form [formGroup]="personForm" (ngSubmit)="onSubmit()">
+    <div class="form-group">
+      <label for="name">Name</label>
+      <input id="name" formControlName="name" type="text" required />
+    </div>
+    
+    <div class="form-group">
+      <label for="email">Email</label>
+      <input id="email" formControlName="email" type="email" required />
+      <div class="error-message" *ngIf="personForm.get('email')?.invalid && personForm.get('email')?.touched">
+        Email inválido
+      </div>
+    </div>
+    
+    <div class="form-group">
+      <label for="phone">Contact Number</label>
+      <input id="phone" formControlName="phone" type="text" required />
+      <div class="error-message" *ngIf="personForm.get('phone')?.invalid && personForm.get('phone')?.touched">
+        O telefone deve ter 10 ou 11 dígitos numéricos.
+      </div>
+    </div>
+    
+    <!-- Campo para selecionar o tipo de contato -->
+    <div class="form-group">
+      <label for="contactType">Tipo de Contato</label>
+      <select id="contactType" formControlName="contactType" class="form-control" required>
+        <option value="1">Telefone</option>
+        <option value="2">Email</option>
+        <option value="3">Endereço</option>
+      </select>
+      <div *ngIf="personForm.get('contactType')?.invalid && personForm.get('contactType')?.touched" class="error-message">
+        Tipo de contato é obrigatório.
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label for="zipCode">zipCode</label>
+      <input id="zipCode" formControlName="zipCode" type="text" (blur)="fetchAddress()" required />
+    </div>
+    
+    <div class="form-group">
+      <label for="address">Address</label>
+      <input id="address" formControlName="address" type="text" required />
+    </div>
+    
+    <div class="form-group">
+      <label for="city">City</label>
+      <input id="city" formControlName="city" type="text" required />
+    </div>
+    
+    <div class="form-group">
+      <label for="state">State</label>
+      <input id="state" formControlName="state" type="text" required />
+    </div>
+    
+    <div class="button-group">
+      <button type="submit" class="save-btn" [disabled]="personForm.invalid">
+        {{ isEditing ? 'Update' : 'Save' }}
+      </button>      
+      <button type="button" class="cancel-btn" (click)="onCancel()">Cancel</button>
+    </div>
   </form>
-  
+</div>

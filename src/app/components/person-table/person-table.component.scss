@@ -1,13 +1,13 @@
 /* person-table.component.scss */
 
 /* Paleta de Cores */
-$primary-color: #4CAF50;
-$secondary-color: #2E7D32;
-$background-color: #F4F7F6;
-$hover-color: #C8E6C9;
-$border-color: #E0E0E0;
-$danger-color: #D32F2F;
-$danger-hover: #B71C1C;
+$primary-color: #007BFF;
+$secondary-color: #0056b3;
+$background-color: #F8F9FA;
+$hover-color: #DDE6ED;
+$border-color: #CED4DA;
+$danger-color: #DC3545;
+$danger-hover: #B22222;
 
 /* Estilos gerais */
 table {
@@ -67,8 +67,9 @@ button {
 .delete-btn:hover {
   background: $danger-hover;
 }
+
 .add-btn {
-  background: #2196F3;
+  background: #28A745;
   color: white;
   border: none;
   padding: 10px 16px;
@@ -82,9 +83,8 @@ button {
 }
 
 .add-btn:hover {
-  background: #1565C0;
+  background: #218838;
 }
-
 
 /* Responsividade */
 @media (max-width: 768px) {
@@ -100,6 +100,4 @@ button {
     padding: 6px 10px;
     font-size: 12px;
   }
-
-  
 }

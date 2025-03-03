@@ -29,4 +29,17 @@ export class PersonListComponent implements OnInit {
       });
     }
   }
+
+  getContactType(contactType: number): string {
+    switch (contactType) {
+      case 1:
+        return 'Telefone';
+      case 2:
+        return 'Email';
+      case 3:
+        return 'Endereço';
+      default:
+        return 'Desconhecido';
+    }
+  }
 }
