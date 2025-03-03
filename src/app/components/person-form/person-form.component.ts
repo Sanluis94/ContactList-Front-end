@@ -2,9 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { PersonService } from '../../services/person.service';
-import { ContactService } from '../../services/contact.service'; // Importando o serviço de contatos
 import { Person } from '../../models/person';
-import { ContactDTO } from '../../models/contact-dto';
 import { HttpClient } from '@angular/common/http';
 
 @Component({
@@ -16,13 +14,10 @@ export class PersonFormComponent implements OnInit {
   personForm: FormGroup;
   isEditing = false;
   personId?: number;
-  contacts: ContactDTO[] = [];
-  showContacts = false; 
 
   constructor(
     private fb: FormBuilder,
     private personService: PersonService,
-    private contactService: ContactService,
     private route: ActivatedRoute,
     private router: Router,
     private http: HttpClient
@@ -46,25 +41,8 @@ export class PersonFormComponent implements OnInit {
       this.isEditing = true;
       this.personService.getPersonById(this.personId).subscribe(person => {
         this.personForm.reset(person);
-        this.loadContacts();
       });
     }
-  }
-
-
-  loadContacts(): void {
-    if (this.personId) {
-      this.contactService.getContactsByPersonId(this.personId).subscribe((data: ContactDTO[]) => {
-        this.contacts = data;
-      });
-    }
-  }
-
-  toggleContacts(): void {
-    this.showContacts = !this.showContacts;
-  }
-
-  addContact(): void {
   }
 
   onSubmit(): void {
@@ -103,6 +81,22 @@ export class PersonFormComponent implements OnInit {
           }
         });
       }
+    }
+  }
+  
+
+  fetchAddress(): void {
+    const zipCode = this.personForm.get('zipCode')?.value;
+    if (zipCode.length === 8) {
+      this.http.get<any>(`https://viacep.com.br/ws/${zipCode}/json/`).subscribe(data => {
+        if (!data.erro) {
+          this.personForm.patchValue({
+            address: `${data.logradouro}, ${data.bairro}`,
+            city: data.localidade,
+            state: data.uf
+          });
+        }
+      });
     }
   }
 
