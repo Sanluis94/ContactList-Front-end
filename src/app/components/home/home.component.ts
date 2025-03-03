@@ -11,7 +11,7 @@ export class HomeComponent {
   constructor(private router: Router) {}
 
   navigateToPeople() {
-    this.router.navigate(['/people']);
+    this.router.navigate(['/person-table']);
   }
 
   navigateToAddPerson() {

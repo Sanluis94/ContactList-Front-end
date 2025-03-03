@@ -23,15 +23,15 @@ export class PersonFormComponent implements OnInit {
     private http: HttpClient
   ) {
     this.personForm = this.fb.group({
-      name: ['', Validators.required],
-      email: ['', [Validators.required, Validators.email]],
-      phone: ['', [Validators.required, Validators.pattern('^[0-9]{10,11}$')]],
-      zipCode: ['', [Validators.required, Validators.minLength(8), Validators.maxLength(8)]],
+      active: [true],
       address: ['', Validators.required],
       city: ['', Validators.required],
+      contactType: [null, Validators.required], 
+      email: ['', [Validators.required, Validators.email]],
+      name: ['', Validators.required],
+      phone: ['', [Validators.required, Validators.pattern('^[0-9]{10,11}$')]],
       state: ['', Validators.required],
-      active: [true],
-      contactType: ['', Validators.required], 
+      zipCode: ['', [Validators.required, Validators.minLength(8), Validators.maxLength(8)]],
     });
   }
 
@@ -50,21 +50,33 @@ export class PersonFormComponent implements OnInit {
       this.personForm.markAllAsTouched();
       return;
     }
-  
+
     const person: Person = this.personForm.value;
     console.log('Enviando para a API:', JSON.stringify(person, null, 2));
-  
-    this.personService.createPerson(person).subscribe({
-      next: () => {
-        console.log('Pessoa criada com sucesso:', person);
-        this.router.navigate(['/people']);
-      },
-      error: (err) => {
-        console.error('Erro ao criar pessoa:', err);
-        console.log('Detalhes do erro:', err.message);
-        console.log('Erro completo:', err);
-      }
-    });
+
+    if (this.isEditing) {
+      // Se estiver editando, faz um PUT
+      this.personService.updatePerson(this.personId!, person).subscribe({
+        next: () => {
+          console.log('Pessoa atualizada com sucesso:', person);
+          this.router.navigate(['/person-table']);
+        },
+        error: (err) => {
+          console.error('Erro ao atualizar pessoa:', err);
+        }
+      });
+    } else {
+      // Se não estiver editando, faz um POST para criar uma nova pessoa
+      this.personService.createPerson(person).subscribe({
+        next: () => {
+          console.log('Pessoa criada com sucesso:', person);
+          this.router.navigate(['/person-table']);
+        },
+        error: (err) => {
+          console.error('Erro ao criar pessoa:', err);
+        }
+      });
+    }
   }
 
   fetchAddress(): void {
@@ -83,6 +95,6 @@ export class PersonFormComponent implements OnInit {
   }
 
   onCancel(): void {
-    this.router.navigate(['/people']);
+    this.router.navigate(['/person-table']);
   }
 }

@@ -25,11 +25,11 @@
     
     <!-- Campo para selecionar o tipo de contato -->
     <div class="form-group">
-      <label for="contactType">Tipo de Contato</label>
-      <select id="contactType" formControlName="contactType" class="form-control" required>
-        <option value="1">Telefone</option>
-        <option value="2">Email</option>
-        <option value="3">Endereço</option>
+      <label for="contactType">Contact Type</label>
+      <select id="contactType" formControlName="contactType">
+        <option [ngValue]="1">Telefone</option>
+        <option [ngValue]="2">Email</option>
+        <option [ngValue]="3">Endereço</option>
       </select>
       <div *ngIf="personForm.get('contactType')?.invalid && personForm.get('contactType')?.touched" class="error-message">
         Tipo de contato é obrigatório.
